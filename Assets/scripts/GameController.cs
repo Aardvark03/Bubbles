@@ -1,9 +1,20 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
+using System;
 
 public class GameController : MonoBehaviour {
+    public Text gameOverText;
+    public Text scoreText;
+
+    int scoreRed;
+    int scoreBlue;
+
     void Start() {
-        BallController.OnGameOver += OnGameOver;  
+        BallController.OnGameOver += OnGameOver;
+
+        scoreRed = 0;
+        scoreBlue = 0;
     }
 
     void updateSpawnerArray(GameObject[] spawners) {
@@ -78,8 +89,16 @@ public class GameController : MonoBehaviour {
     }
 
     void OnGameOver(string winner) {
-        Debug.Log("Game Over. " + winner + " wins!");
-        Debug.Log("Restarting...");
+        HideLabel hideScript = gameOverText.GetComponent<HideLabel>(); 
+        gameOverText.text = winner + " wins!";
+        hideScript.show();
+
+        if (winner == "Blue") {
+            scoreBlue += 1;
+        } else {
+            scoreRed += 1;
+        }
+        scoreText.text = String.Format("{0} : {1}", scoreBlue, scoreRed);
 
         reset();
     }
