@@ -47,21 +47,19 @@ public class GameController : MonoBehaviour {
     }
 
     void Update() {
-         foreach (Touch touch in Input.touches) {
-            if (touch.phase == TouchPhase.Ended) {
-                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(touch.position), Vector2.zero);
+        if (Input.GetMouseButtonUp(0)) {
+            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
-                if (hit.collider != null) {
-                    string tag = hit.collider.gameObject.tag;
-                    if (tag == "blueSpawner" || tag == "redSpawner") {
-                        SpawnerController spawner = hit.collider.gameObject.GetComponent<SpawnerController>();
-                        spawner.toggle();
+            if (hit.collider != null) {
+                string tag = hit.collider.gameObject.tag;
+                if (tag == "blueSpawner" || tag == "redSpawner") {
+                    SpawnerController spawner = hit.collider.gameObject.GetComponent<SpawnerController>();
+                    spawner.toggle();
 
-                        updateSpawnerFrequencies();
-                    }
+                    updateSpawnerFrequencies();
                 }
             }
-         }
+        }
     }
 
     void reset() {
