@@ -9,8 +9,10 @@ public class SpawnerController : MonoBehaviour {
     public Sprite passiveSprite;
     public Sprite activeSprite;
 
-	void Start () {
-        StartCoroutine("spawnBalls");	
+    float spawnTimer;
+
+    void Start() {
+        spawnTimer = 0f; 
     }
 
     public void toggle() {
@@ -26,14 +28,16 @@ public class SpawnerController : MonoBehaviour {
 
     }
 
-    IEnumerator spawnBalls() {
-        while (true) {
-            if (isActive) {
-                Instantiate(ballPrefab, transform.position, Quaternion.identity);
-            }
-            yield return new WaitForSeconds(spawnFrequency);
+    void Update() {
+        spawnTimer -= Time.deltaTime;
+
+        if (spawnTimer <= 0) {
+                if (isActive) {
+                    Instantiate(ballPrefab, transform.position, Quaternion.identity);
+                    spawnTimer = spawnFrequency;
+                } else {
+                    spawnTimer = 0f;
+                }
         }
     }
-
-    
 }
